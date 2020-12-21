@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['submit'])){
     $name=isset($_POST['city'])?$_POST['city']:'';
-    $days=isset($_POST['days'])?$_POST['days']:'';
+    
     // lat ,long
     $handle = curl_init();
     $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
@@ -10,6 +10,7 @@ if(isset($_POST['submit'])){
     $output = curl_exec($handle);
     $arr1 =  json_decode($output);
     curl_close($handle);
+    
     //weather calculation
     $handle = curl_init();
     $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$arr1->city->coord->lat."&lon=".$arr1->city->coord->lon."&exclude=minutely,hourly&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
@@ -62,7 +63,7 @@ function quater() {
             <p class="h1 text-primary mb-4"><i class="fa fa-snowflake-o" aria-hidden="true"></i>Weather data</p>
             <form class="form-inline col-lg-6 mx-auto" action="index.php" method="POST">
                 <div class="form-group mx-auto">
-                    <input type="text" name="city" placeholder="City Name" class="form-control" required>
+                    <input type="text" name="city" placeholder="City Name" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" class="form-control" required>
                     <input type="submit" name="submit" class="btn btn-primary ml-4" value="FORECAST">
                 </div>
             </form>
@@ -122,19 +123,4 @@ function quater() {
         </div>
     </div>
 </body>
-<!--<script>
-    $(document).ready(function () {
-        var request = $.ajax({
-            url: "http://api.openweathermap.org/data/2.5/weather",
-            method: "GET",
-            data: { id : '2172797', appid: '1c9f66ca3cef9fc28af0cd4bc8e09522'},
-            success: function(response) {
-                // response from OpenWeatherMap
-                var dataArray = JSON.parse(response); // create an array from JSON element
-                console.log(response);
-            }
-            });
-    });
-</script>-->
-
 </html>
