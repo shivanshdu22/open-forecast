@@ -4,7 +4,7 @@ if(isset($_POST['submit'])){
     
     // lat ,long
     $handle = curl_init();
-    $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
+    $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=[Your app ID]&units=metric";
     curl_setopt($handle, CURLOPT_URL, $url);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($handle);
@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
     
     //weather calculation
     $handle = curl_init();
-    $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$arr1->city->coord->lat."&lon=".$arr1->city->coord->lon."&exclude=minutely,hourly&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
+    $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$arr1->city->coord->lat."&lon=".$arr1->city->coord->lon."&exclude=minutely,hourly&appid=[Your App Id]&units=metric";
     curl_setopt($handle, CURLOPT_URL, $url);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($handle);
