@@ -4,7 +4,7 @@ if(isset($_POST['submit'])){
     
     // lat ,long
     $handle = curl_init();
-    $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=[Your app ID]&units=metric";
+    $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
     curl_setopt($handle, CURLOPT_URL, $url);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($handle);
@@ -12,8 +12,9 @@ if(isset($_POST['submit'])){
     curl_close($handle);
     
     //weather calculation
+
     $handle = curl_init();
-    $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$arr1->city->coord->lat."&lon=".$arr1->city->coord->lon."&exclude=minutely,hourly&appid=[Your App Id]&units=metric";
+    $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$arr1->city->coord->lat."&lon=".$arr1->city->coord->lon."&exclude=minutely,hourly&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
     curl_setopt($handle, CURLOPT_URL, $url);
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
     $output = curl_exec($handle);
@@ -24,6 +25,23 @@ if(isset($_POST['submit'])){
     //echo "<pre>";
     // print_r($arr);
    
+}
+
+if(isset($_POST['cord'])){
+    $lat=isset($_POST['lat'])?$_POST['lat']:'';
+
+    $long=isset($_POST['long'])?$_POST['long']:'';
+
+    $handle = curl_init();
+    $url= "https://api.openweathermap.org/data/2.5/onecall?lat=".$lat."&lon=".$long."&exclude=minutely,hourly&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
+    curl_setopt($handle, CURLOPT_URL, $url);
+    curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+    $output = curl_exec($handle);
+    $arr =  json_decode($output);
+    curl_close($handle);
+    date_default_timezone_set("Asia/Kolkata");
+     //echo "<pre>";
+    // print_r($arr);
 }
 //Calculate Quater of the day//
 function quater() {
@@ -55,6 +73,22 @@ function quater() {
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+    $(document).ready(function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            //console.log(position.coords.latitude);
+        } else {
+            console.log("NO")
+        }
+
+        function showPosition(position) {
+            $('#lat').val(position.coords.latitude);
+            $('#loc').val(position.coords.longitude);
+            console.log(position.coords.latitude);
+        }
+    });
+    </script>
 </head>
 
 <body>
@@ -63,15 +97,26 @@ function quater() {
             <p class="h1 text-primary mb-4"><i class="fa fa-snowflake-o" aria-hidden="true"></i>Weather data</p>
             <form class="form-inline col-lg-6 mx-auto" action="index.php" method="POST">
                 <div class="form-group mx-auto">
-                    <input type="text" name="city" placeholder="City Name" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" class="form-control" required>
+                    <input type="text" name="city" placeholder="City Name" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
+                        class="form-control" required>
                     <input type="submit" name="submit" class="btn btn-primary ml-4" value="FORECAST">
+                </div>
+            </form>
+            <h3 class="text-white mt-2">OR</h3>
+            <form class="form-inline col-lg-6 mx-auto mt-2" action="index.php" method="POST">
+                <div class="form-group mx-auto">
+                    <input type="text" name="lat" id="lat" placeholder="City Name" class="form-control" required hidden >
+                    <input type="text" name="long" id="loc" placeholder="City Name" class="form-control" required hidden>
+                    <input type="submit" name="cord" class="btn btn-primary ml-4" value="Use On Current Location">
                 </div>
             </form>
         </div>
         <div class="container mx-auto">
-            <?php if(isset($_POST['submit'])){  ?>
+            <?php if(isset($_POST['submit']) || isset($_POST['cord'])) {  ?>
             <div class="row-lg-12 text-center bg-dark text-primary mt-4">
-                <p class="h2 "><?php echo strtoupper($name); ?></p>
+                <p class="h2 "><?php if(isset($_POST['submit'])){
+                    echo strtoupper($name);
+                }?></p>
             </div>
             <div class="row mx-auto ">
                 <?php foreach ($arr->daily as $key=>$data) { ?>
@@ -123,4 +168,5 @@ function quater() {
         </div>
     </div>
 </body>
+
 </html>
