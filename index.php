@@ -73,6 +73,7 @@ function quater() {
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script>
     $(document).ready(function() {
         if (navigator.geolocation) {
@@ -85,7 +86,7 @@ function quater() {
         function showPosition(position) {
             $('#lat').val(position.coords.latitude);
             $('#loc').val(position.coords.longitude);
-            console.log(position.coords.latitude);
+            //console.log(position.coords.latitude);
         }
     });
     </script>
@@ -94,20 +95,28 @@ function quater() {
 <body>
     <div class="main content-center">
         <div class="col-lg-12 bg-dark p-5 text-center">
-            <p class="h1 text-primary mb-4"><i class="fa fa-snowflake-o" aria-hidden="true"></i>Weather data</p>
+            <p class="h1"><i class=" text-danger fa fa-sun-o" aria-hidden="true"></i>
+            <a class="h2 text-primary mb-2 font-weight-bold">WEATHER TODAY </a></p>
+
+            <p class="h5 text-danger mb-4 font-italic"> (with real feel &#8451;)</p>
             <form class="form-inline col-lg-6 mx-auto" action="index.php" method="POST">
-                <div class="form-group mx-auto">
-                    <input type="text" name="city" placeholder="City Name" pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
-                        class="form-control" required>
-                    <input type="submit" name="submit" class="btn btn-primary ml-4" value="FORECAST">
+                <div class="form-group mx-auto has-feedback">
+                    <span class="mr-1 text-white fa fa-search form-control-feedback"> </span>
+                    <input type="text" name="city" placeholder="Serach City Name.."
+                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$" class="form-control" required>
+
+                    <input type="submit" name="submit" class="btn btn-primary ml-4" style="background-color:transparent"
+                        value="FORECAST">
                 </div>
             </form>
-            <h3 class="text-white mt-2">OR</h3>
+            <hr>
             <form class="form-inline col-lg-6 mx-auto mt-2" action="index.php" method="POST">
                 <div class="form-group mx-auto">
-                    <input type="text" name="lat" id="lat" placeholder="City Name" class="form-control" required hidden >
-                    <input type="text" name="long" id="loc" placeholder="City Name" class="form-control" required hidden>
-                    <input type="submit" name="cord" class="btn btn-primary ml-4" value="Use On Current Location">
+                    <input type="text" name="lat" id="lat" placeholder="City Name" class="form-control" required hidden>
+                    <input type="text" name="long" id="loc" placeholder="City Name" class="form-control" required
+                        hidden>
+                    <button type="submit" name="cord" class="btn btn-primary ml-4" style="background-color:transparent">
+                        Current <i class='fa fa-map-marker' aria-hidden='true'></i></button>
                 </div>
             </form>
         </div>
@@ -120,12 +129,12 @@ function quater() {
             </div>
             <div class="row mx-auto ">
                 <?php foreach ($arr->daily as $key=>$data) { ?>
-                <div class="card  bg-primary m-4 mx-auto text-white p-2">
-                    <div class="card-body">
+                <div class="card shadow bg-primary m-4 mx-auto text-white p-2">
+                    <div class="card-body ">
                         <p class="h6 card-text"><?php echo date('l F\'y, d', $data->dt  ); ?></p>
                         <hr>
-                        <p class="h2 card-text">
-                            <?php if(quater()==1) {echo $data->temp->morn."<sup>o</sup>C   Morning"; } else if(quater()==2){echo $data->temp->day."<sup>o</sup>C  Afternoon "; } else if(quater()==3){echo $data->temp->eve."<sup>o</sup>C   Evening"; } else if(quater()==4) { echo $data->temp->night."<sup>o</sup>C Night"; }?></a>
+                        <p class="h3 card-text">
+                            <?php if(quater()==1) {echo $data->temp->morn."<sup>o</sup>C  <a class='h4'> MORNING</a>"; } else if(quater()==2){echo $data->temp->day."<sup>o</sup>C  <a class='h4'>AFTERNOON</a> "; } else if(quater()==3){echo $data->temp->eve."<sup>o</sup>C   <a class='h4'>EVENING</a>"; } else if(quater()==4) { echo $data->temp->night."<sup>o</sup>C <a class='h4'>NIGHT</a>"; }?></a>
                         </p>(RealFeel <?php echo $data->feels_like->day ?><sup>o</sup>C)</a>
                         <p class="h5 card-text"><?php echo $data->weather[0]->main;?>
                             (<?php echo $data->weather[0]->description;?>)</p>
@@ -133,30 +142,30 @@ function quater() {
                             class="weather-icon" />
                         <hr>
 
-                        <p class="h2 mt-2 card-text"><?php echo "Temprature";?>(<sup>o</sup>C)</a></p>
+                        <p class="h3 mt-2 font-weight-bold card-text"><?php echo "Temprature";?>(<sup>o</sup>C)</a></p>
                         <p class="h6  card-text">Morning <?php echo $data->temp->morn ?><sup>o</sup>C</a>
                             <span class="ml-5">Day <?php echo $data->temp->day ?><sup>o</sup>C</a></span>
                         </p>
 
-                        <p class="h6 card-text">Evening <?php echo $data->temp->eve ?><sup>o</sup>C</a>
+                        <p class="h6 card-text font-weight-bold">Evening <?php echo $data->temp->eve ?><sup>o</sup>C</a>
                             <span class="ml-5"> Night <?php echo $data->temp->night ?><sup>o</sup>C</a></span>
                         </p>
 
-                        <p class="h5 card-text">Min <span
+                        <p class="h5 card-text font-weight-bold">Min <span
                                 class="h6"><?php echo $data->temp->min ; ?><sup>o</sup>C</span>
                             <span class="ml-5 "> Max <span class="h6"><?php echo $data->temp->max ; ?><sup>o</sup>C
                         </p>
                         <hr>
-                        <p class="h5 card-text">Pressure <span
+                        <p class="h5 font-weight-bold card-text">Pressure <span
                                 class="h6 text-right ml-5"><?php echo $data->pressure." mbar"; ?></span></p>
-                        <p class="h5 card-text">Humidity <span
-                                class="h6 text-right ml-5"><?php echo $data->humidity."%" ; ?></span></p>
-                        <p class="h5 card-text">Wind Speed <span
-                                class="h6 text-right ml-5"><?php echo $data->wind_speed." m/s" ; ?></span></p>
+                        <p class="h5 card-text font-weight-bold">Humidity <span
+                                class="h6 text-right font-weight-bold ml-5"><?php echo $data->humidity."%" ; ?></span></p>
+                        <p class="h5 card-text font-weight-bold">Wind Speed <span
+                                class="h6 text-right font-weight-bold ml-5"><?php echo $data->wind_speed." m/s" ; ?></span></p>
                         <hr>
-                        <p class="h4 mt-2 card-text"><?php echo "Important Events";?></a></p>
+                        <p class="h4 mt-2 card-text font-weight-bold "><?php echo "Important Events";?></a></p>
                         <p class="h5 card-text"> Sunrise <span
-                                class="h6 text-left ml-5"><?php echo date('h:i:sa', $data->sunrise  ); ?></spna>
+                                class="h6 text-left ml-5 "><?php echo date('h:i:sa', $data->sunrise  ); ?></spna>
                         </p>
                         <h5 class="">Sunset<span
                                 class="text-left h6 ml-5"><?php echo date('h:i:sa', $data->sunset  ); ?></span></h5>
@@ -167,6 +176,15 @@ function quater() {
             </div>
         </div>
     </div>
+    <!-- Footer -->
+    <footer class="page-footer font-small bg-dark darken-3 p-5">
+        <!-- Copyright -->
+        <div class="footer-copyright text-center text-white">© 2020 Copyright:
+            <a href="#"> OPEN FORECAST Pvt. Ltd.</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
 </body>
 
 </html>
