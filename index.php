@@ -2,7 +2,7 @@
 if(isset($_POST['submit'])){
     $name=isset($_POST['city'])?$_POST['city']:'';
     
-    // lat ,long
+    // lat ,long.
     $handle = curl_init();
     $url= "http://api.openweathermap.org/data/2.5/forecast?q=".$name."&appid=1c9f66ca3cef9fc28af0cd4bc8e09522&units=metric";
     curl_setopt($handle, CURLOPT_URL, $url);
